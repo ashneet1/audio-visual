@@ -1,3 +1,5 @@
+#Modified batch_audio_embedding.py
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Usage: python3 batch_audio_embedding.py directory_of_ego4d_videos data_set
@@ -75,48 +77,54 @@ neta.cuda()
 
 for video_id in video_nums:
      vname = video_dir + '/' + video_files[video_id]
-     cap = cv.VideoCapture(vname)
-     video_frames = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
-     video_fps =  cap.get(cv.CAP_PROP_FPS)
-     cap.release()
-     
-     sound = audiosegment.from_file(vname)
-     sound = sound.resample(sample_rate_Hz=16000, sample_width=2, channels=1)
-     samples = sound.get_array_of_samples()
-     fps = 16000
-     aud = np.array(samples).astype('float32')/65536.0
-     total_time = int(aud.shape[0]/fps)
-     #print('audio time', total_time, aud.shape[0], video_frames, video_frames/video_fps)
-     
-     ff = []
-     sys.stdout.write('\033[K')
-     for frame_num in range(video_frames):
-         print(frame_num, end = '\r')
-         afirst = int(frame_num * 1.0 / float(video_fps) * fps - 0.5*fps)
-         alast = int(afirst + fps)
-     
-         if afirst < 0:
-            afirst = 0
-        
-         if alast >= aud.shape[0]:
-            alast = aud.shape[0]-1 
-         
-         y = aud[afirst:alast]
-     
-         sp = specgram(y, 16000)
-         sp = sp[:,0:256]
-         sp = np.reshape(sp, (1,1,sp.shape[0],sp.shape[1]))
-         
-         ainput = torch.Tensor(sp)
-         ainput = Variable(ainput.cuda())
-         
-         f = neta(ainput)
-         f = f.cpu().detach().numpy()
-     
-         ff.append(f[0]) 
-         
-     with open('embeddings/' + str(video_id) + '.pickle', 'wb') as handle:
-         pickle.dump(ff, handle, protocol=pickle.HIGHEST_PROTOCOL)    
+    #If the video is not in the list of downloaded video clips
+     if not os.path.isfile(vname):
+        print("The video_id does not exists:")
+        print(vname)
+     else:
+        print("Processing the video")
+        cap = cv.VideoCapture(vname)
+        video_frames = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
+        video_fps =  cap.get(cv.CAP_PROP_FPS)
+        cap.release()
+
+        sound = audiosegment.from_file(vname)
+        sound = sound.resample(sample_rate_Hz=16000, sample_width=2, channels=1)
+        samples = sound.get_array_of_samples()
+        fps = 16000
+        aud = np.array(samples).astype('float32')/65536.0
+        total_time = int(aud.shape[0]/fps)
+        #print('audio time', total_time, aud.shape[0], video_frames, video_frames/video_fps)
+
+        ff = []
+        sys.stdout.write('\033[K')
+        for frame_num in range(video_frames):
+            print(frame_num, end = '\r')
+            afirst = int(frame_num * 1.0 / float(video_fps) * fps - 0.5*fps)
+            alast = int(afirst + fps)
+
+            if afirst < 0:
+                afirst = 0
+
+            if alast >= aud.shape[0]:
+                alast = aud.shape[0]-1
+
+            y = aud[afirst:alast]
+
+            sp = specgram(y, 16000)
+            sp = sp[:,0:256]
+            sp = np.reshape(sp, (1,1,sp.shape[0],sp.shape[1]))
+
+            ainput = torch.Tensor(sp)
+            ainput = Variable(ainput.cuda())
+
+            f = neta(ainput)
+            f = f.cpu().detach().numpy()
+
+            ff.append(f[0])
+
+        with open('embeddings/' + str(video_id) + '.pickle', 'wb') as handle:
+            pickle.dump(ff, handle, protocol=pickle.HIGHEST_PROTOCOL)   
 
 
 
