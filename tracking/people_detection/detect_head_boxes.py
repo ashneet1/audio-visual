@@ -40,13 +40,13 @@ while(1):
         boxes.append([x1, y1, x2, y2, r[k][1]]);
         cv.rectangle(frame,(x1,y1),(x2,y2),(0,255,0),3)
     
-    cv.imshow('image', frame) 
+    #commenting out for google colab: cv.imshow('image', frame) 
     if len(boxes) > 0:
        np.savetxt('results/' + str(count) + '.txt', boxes, fmt='%d %d %d %d %f')
     else:
        np.savetxt('results/' + str(count) + '.txt', boxes)
  
-    cv.waitKey(1)
+    #commenting out for google colab: cv.waitKey(1)
     count = count + 1
 
 cap.release()
