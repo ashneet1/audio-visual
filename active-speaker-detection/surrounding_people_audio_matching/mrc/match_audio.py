@@ -18,6 +18,13 @@ video_nums = np.loadtxt(data_set + '.txt')
 video_nums = video_nums.astype('int').tolist()
 
 for fileno in video_nums:
+
+    vname =asd_results_dir + '/' + str(fileno) + '.txt'
+    #If the file associtaed to the downloaded video clips exists
+    if not os.path.isfile(vname):
+        print("The file does not exist")
+        print(vname)
+    else:
     print(fileno, end = '\r')
     res = np.loadtxt(asd_results_dir + '/' + str(fileno) + '.txt')
     if len(res.shape) == 1:
