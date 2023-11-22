@@ -38,19 +38,26 @@ for fileno in range(len(filenames)):
     os.system('mkdir tracking_evaluation/mot_challenge/mytrack-test/' + str(fileno))
     os.system('mkdir tracking_evaluation/mot_challenge/mytrack-test/' + str(fileno) + '/gt')
     np.savetxt('tracking_evaluation/mot_challenge/mytrack-test/' + str(fileno) + '/gt/gt.txt', mot_res, fmt='%d', delimiter=',')
-
-    cap = cv.VideoCapture(video_dir + '/' + filenames[fileno])
-    total = int(cap.get(cv.CAP_PROP_FRAME_COUNT)) + 1
-    fps = cap.get(cv.CAP_PROP_FPS)
-    ret, frame = cap.read()
-    with open('tracking_evaluation/mot_challenge/mytrack-test/' + str(fileno) + '/seqinfo.ini', 'w') as f:
-        f.write('[Sequence]\n')
-        f.write('name=' + str(fileno) + '\n')
-        f.write('imDir=img1\n')
-        f.write('frameRate=' + str(fps) + '\n')
-        f.write('seqLength=' + str(total) + '\n')
-        f.write('imWidth=' + str(frame.shape[1]) + '\n')
-        f.write('imHeight=' + str(frame.shape[0]) + '\n')
-        f.write('imExt=.jpg\n')
-    cap.release()    
+    
+    vname = video_dir + '/' + filenames[fileno]
+    #If the video is not in the list of downloaded video clips
+    if not os.path.isfile(vname):
+        print("The video_id does not exists:")
+        print(vname)
+    #If the video is in the list of downloaded video clips
+    else:
+      cap = cv.VideoCapture(video_dir + '/' + filenames[fileno])
+      total = int(cap.get(cv.CAP_PROP_FRAME_COUNT)) + 1
+      fps = cap.get(cv.CAP_PROP_FPS)
+      ret, frame = cap.read()
+      with open('tracking_evaluation/mot_challenge/mytrack-test/' + str(fileno) + '/seqinfo.ini', 'w') as f:
+          f.write('[Sequence]\n')
+          f.write('name=' + str(fileno) + '\n')
+          f.write('imDir=img1\n')
+          f.write('frameRate=' + str(fps) + '\n')
+          f.write('seqLength=' + str(total) + '\n')
+          f.write('imWidth=' + str(frame.shape[1]) + '\n')
+          f.write('imHeight=' + str(frame.shape[0]) + '\n')
+          f.write('imExt=.jpg\n')
+      cap.release()  
   
