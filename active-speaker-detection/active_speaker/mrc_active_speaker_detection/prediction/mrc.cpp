@@ -321,9 +321,11 @@ int main(int argn, char **argv )
 
         cv::Mat img2;
         cv::resize(img_draw, img2, cv::Size(img_draw.cols/2, img_draw.rows/2));
-	
+	/*
+   commenting out for google colab:
 	cv::imshow("Active speaker", img2);
         cv::waitKey(1);
+   */
 	++frame_num; 
      }
 
