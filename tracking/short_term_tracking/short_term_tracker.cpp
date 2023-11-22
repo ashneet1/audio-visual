@@ -559,14 +559,17 @@ int main(int argn, char **argv )
                cv::rectangle(img, rec, CV_RGB(colors[cid][0], colors[cid][1], colors[cid][2]), 5);
 	  }
 
-          cv::imshow("Track", img);
+
+          //commenting out for google colab: cv::imshow("Track", img);
 	  ++frame_num;
 
-
+        /*
+        commenting out for google colab:
           if ((char)27 == cv::waitKey(1) ) {  
 	      cout << flush; 
 	      break;
           }
+          */
      }
 
      fclose(fp_out);
