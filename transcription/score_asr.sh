@@ -8,14 +8,14 @@ fi
 
 # -------------------
 # Modify according to your paths
-PATH=/home/$USER/software/SCTK/bin:$PATH # sclite
-PATH=/home/$USER/software/ffmpeg:$PATH
+PATH=/content/SCTK/bin:$PATH # sclite
+PATH=/usr/bin/ffmpeg:$PATH
 # The following may not be necessary depending on your ffmpeg installation
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/$USER/software/libsndfile/lib
-GLM=english.glm  # Kaldi GitHub
-audioDir=/home/$USER/ego4d_data/wavs_16000
-videoDir=/home/$USER/ego4d_data/clips
-ego4d=/home/$USER/ego4d_data
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/share/doc/libsndfile1/lib
+GLM=/content/egocentric/audio-visual/transcription/english.glm #From Kaldi Github
+audioDir=/content/egocentric/audio-visual/data/v2/wavs_16000
+videoDir=/content/egocentric/audio-visual/data/v2/clips
+ego4d=/content/egocentric/audio-visual/data
 vadType="oracle"
 # -------------------
 
