@@ -63,19 +63,24 @@ def main(args):
         for clip in clip2utt:
             print(clip)
             audio_file = os.path.join(args.audio_dir, clip+'.wav')
-            speech, rate = soundfile.read(audio_file)
-            assert(rate == 16000)
-            for utt in clip2utt[clip]:
-                hyp_text = transcribe_oracle_segment(
-                    speech2text, speech, rate,
-                    utt.tb, utt.te,
-                    min_length=args.min_length
-                )
+            #processes the subset of videos downloaded
+            if not os.path.isfile(audio_file):
+              print("The audio file does not exist")
+            else:
+              print("processing")
+              speech, rate = soundfile.read(audio_file)
+              assert(rate == 16000)
+              for utt in clip2utt[clip]:
+                  hyp_text = transcribe_oracle_segment(
+                      speech2text, speech, rate,
+                      utt.tb, utt.te,
+                      min_length=args.min_length
+                  )
 
-                trn_f.write("{} ({})\n".format(hyp_text, utt.name))
-                ctr += 1
-                if hyp_text.strip() == '':
-                    empty_ctr += 1
+                  trn_f.write("{} ({})\n".format(hyp_text, utt.name))
+                  ctr += 1
+                  if hyp_text.strip() == '':
+                      empty_ctr += 1
 
         print("Processed {} clips, {} of which are empty".format(ctr, empty_ctr))
 
