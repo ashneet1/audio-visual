@@ -34,8 +34,8 @@ for fileno in video_nums:
         
         for n in range(res.shape[0]):
             if not (int(res[n][1]) in box):
-            box[int(res[n][1])] = {}
-            box[int(res[n][1])][int(res[n][0])] = [int(res[n][2]), int(res[n][3]), int(res[n][4]), int(res[n][5]), int(res[n][6]), res[n][7]];
+              box[int(res[n][1])] = {}
+              box[int(res[n][1])][int(res[n][0])] = [int(res[n][2]), int(res[n][3]), int(res[n][4]), int(res[n][5]), int(res[n][6]), res[n][7]];
         
         with open('../../audio_embedding/make_audio_embeddings/embeddings/' + str(fileno) + '.pickle', 'rb') as f:
                 audio_feature = pickle.load(f)
@@ -62,13 +62,13 @@ for fileno in video_nums:
             q = np.expand_dims(np.array(q), 0)
             for k in afeat:
                 if len(afeat[k]) > 0:
-                f = np.array(afeat[k])
-                d = cdist(q, f)
-                d = np.min(d)
-                dist.append(d)
+                  f = np.array(afeat[k])
+                  d = cdist(q, f)
+                  d = np.min(d)
+                  dist.append(d)
                 else:
-                dist.append(1000) 
+                  dist.append(1000) 
             dists.append(dist)
    
-    np.savetxt('../results/' + str(fileno) + '.txt', dists, fmt='%f')
+        np.savetxt('../results/' + str(fileno) + '.txt', dists, fmt='%f')
    
